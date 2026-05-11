@@ -16,6 +16,14 @@
     <canvas id="canvas" width="640" height="480"
       style="position:absolute; transform:scaleX(-1)"></canvas>
   </div>
+  <button id="capture-btn" style="display:none" onclick="captureAndAnalyze()">Capture Hand</button>
+
+  <div id="measurements">
+    <p>Finger/Palm ratio: <span id="ratio1">—</span></p>
+    <p>Palm/Hand ratio: <span id="ratio2">—</span></p>
+    <p>Result: <span id="result">—</span></p>
+    <p>Confidence: <span id="confidence">—</span></p>
+  </div>
   <script type="module" src="script.js"></script>
 </body>
 </html>
