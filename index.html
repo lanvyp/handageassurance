@@ -11,9 +11,9 @@
   <!-- webcam -->
   <div style="position:relative; width:640px; height:480px;">
     <video id="video" width="640" height="480" autoplay muted
-           style="position:absolute; transform:scaleX(-1)"></video>
+      style="position:absolute; transform:scaleX(-1)"></video>
     <canvas id="canvas" width="640" height="480"
-            style="position:absolute; transform:scaleX(-1)"></canvas>
+      style="position:absolute; transform:scaleX(-1)"></canvas>
   </div>
  
 <script type="module">
@@ -24,9 +24,10 @@
  
   const video  = document.getElementById("video");
   const canvas = document.getElementById("canvas");
-  const ctx    = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d");
   const status = document.getElementById("status");
  
+  // important: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/web_js
   // lines that connect the 21 landmarks
   // https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker
   const CONNECTIONS = [
@@ -46,9 +47,9 @@
   );
   landmarker = await HandLandmarker.createFromOptions(vision, {
     baseOptions: {
-      modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+      modelAssetPath:"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
     },
-    runningMode: "VIDEO",
+    runningMode:"VIDEO",
     numHands: 1
   });
  
