@@ -1,29 +1,71 @@
-<html>
+<html lang="en">
 <head>
-  <title>Hand Landmarks</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand Age Check</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
  
-  <h2>Hand Landmark Test</h2>
-  <p id="status">loading</p>
-  <button id="start-btn" style="display:none" onclick="startCamera()">Start Camera</button>
+  <header>
+    <h1>Hand Age Check</h1>
+    <p>Hold your palm flat facing the camera and then capture</p>
+  </header>
  
-  <!-- webcam -->
-  <div style="position:relative; width:640px; height:480px;">
-    <video id="video" width="640" height="480" autoplay muted
-      style="position:absolute; transform:scaleX(-1)"></video>
-    <canvas id="canvas" width="640" height="480"
-      style="position:absolute; transform:scaleX(-1)"></canvas>
+  <p id="status">Loading model...</p>
+ 
+  <div class="camera-card">
+    <div class="viewport">
+      <div class="camera-placeholder" id="placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+        <span>Camera off</span>
+      </div>
+      <video id="video" autoplay muted playsinline></video>
+      <canvas id="canvas"></canvas>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="start-btn" onclick="startCamera()">Start Camera</button>
+      <button class="btn btn-secondary" id="capture-btn" disabled onclick="captureAndAnalyze()">Capture Hand</button>
+    </div>
   </div>
-  <button id="capture-btn" style="display:none" onclick="captureAndAnalyze()">Capture Hand</button>
-
-  <div id="measurements">
-    <p>Finger/Palm ratio: <span id="ratio1">—</span></p>
-    <p>Palm/Hand ratio: <span id="ratio2">—</span></p>
-    <p>Result: <span id="result">—</span></p>
-    <p>Confidence: <span id="confidence">—</span></p>
+ 
+  <div class="results-card">
+    <div class="results-header">Result</div>
+ 
+    <div class="verdict-row">
+      <span id="result">—</span>
+      <span class="confidence-badge" id="confidence">—</span>
+    </div>
+ 
+    <div class="bar-row">
+      <div class="bar-label">
+        <span>Under 13</span>
+        <span>13+</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" id="bar"></div>
+      </div>
+    </div>
+ 
+    <div class="ratio-grid">
+      <div class="ratio-item"><div class="ratio-label">Finger / Palm</div><div class="ratio-value" id="ratio1">—</div></div>
+      <div class="ratio-item"><div class="ratio-label">Palm / Hand</div><div class="ratio-value" id="ratio2">—</div></div>
+      <div class="ratio-item"><div class="ratio-label">Index / Palm</div><div class="ratio-value" id="ratio3">—</div></div>
+      <div class="ratio-item"><div class="ratio-label">Ring / Palm</div><div class="ratio-value" id="ratio4">—</div></div>
+      <div class="ratio-item"><div class="ratio-label">Pinky / Palm</div><div class="ratio-value" id="ratio5">—</div></div>
+      <div class="ratio-item"><div class="ratio-label">Thumb / Palm</div><div class="ratio-value" id="ratio6">—</div></div>
+      <div class="ratio-item"><div class="ratio-label">Tip Spread</div><div class="ratio-value" id="ratio7">—</div></div>
+    </div>
+ 
+    <div class="detection-row">
+      <span>MediaPipe detection confidence</span>
+      <span class="detection-score" id="detection-score">—</span>
+    </div>
   </div>
+ 
   <script type="module" src="script.js"></script>
 </body>
 </html>
