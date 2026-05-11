@@ -1,0 +1,19 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+.viewport {
+  position: relative;
+  width: 640px;
+  height: 480px;
+}
+video, canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scaleX(-1);
+}
+#measurements {
+  margin-top: 10px;
+  font-size: 18px;
+}

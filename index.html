@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>Hand Landmarks</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
  
@@ -15,93 +16,6 @@
     <canvas id="canvas" width="640" height="480"
       style="position:absolute; transform:scaleX(-1)"></canvas>
   </div>
- 
-<script type="module">
-  import{ 
-    HandLandmarker, FilesetResolver
-  }
-  from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js";
- 
-  const video  = document.getElementById("video");
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
-  const status = document.getElementById("status");
- 
-  // important: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/web_js
-  // lines that connect the 21 landmarks
-  // https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker
-  const CONNECTIONS = [
-    [0,1],[1,2],[2,3],[3,4], // thumb
-    [0,5],[5,6],[6,7],[7,8], // index finger
-    [0,9],[9,10],[10,11],[11,12], // middle finger
-    [0,13],[13,14],[14,15],[15,16], // ring finger
-    [0,17],[17,18],[18,19],[19,20], // pinky
-    [5,9],[9,13],[13,17] // knuckle row across palm
-  ];
- 
-  let landmarker;
- 
-  // load the mediapipe model
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
-  );
-  landmarker = await HandLandmarker.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath:"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
-    },
-    runningMode:"VIDEO",
-    numHands: 1
-  });
- 
-  status.textContent = "model done. click start camera.";
-  document.getElementById("start-btn").style.display = "inline";
- 
-  // turn on webcam
-  window.startCamera = async function() {
-    const stream = await navigator.mediaDevices.getUserMedia({
-        video: true 
-    });
-    video.srcObject = stream;
-    video.onloadedmetadata = () => {
-      status.textContent = "show your hand, palm face towards screen";
-      detectLoop();
-    };
-  }
- 
-  // run detection 
-  let lastTime = -1;
-  function detectLoop() {
-    if (video.currentTime !== lastTime) {
-      lastTime = video.currentTime;
- 
-      const results = landmarker.detectForVideo(video, performance.now());
-      ctx.clearRect(0, 0, 640, 480);
- 
-      if (results.landmarks.length > 0) {
-        const points = results.landmarks[0]; // array of 21 {x, y, z} objects
- 
-        // draw lines between landmarks
-        ctx.strokeStyle = "lime";
-        ctx.lineWidth = 2;
-        for (const [a, b] of CONNECTIONS) {
-          ctx.beginPath();
-          ctx.moveTo(points[a].x * 640, points[a].y * 480);
-          ctx.lineTo(points[b].x * 640, points[b].y * 480);
-          ctx.stroke();
-        }
- 
-        // draw a dot on each landmark
-        for (const point of points) {
-          ctx.beginPath();
-          ctx.arc(point.x * 640, point.y * 480, 4, 0, Math.PI * 2);
-          ctx.fillStyle = "red";
-          ctx.fill();
-        }
-      }
-    }
-    requestAnimationFrame(detectLoop);
-  }
- 
-</script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
